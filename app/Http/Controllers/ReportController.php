@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 class ReportController extends Controller
 {
     public function index(){
-        $reports = DB::table('reports')->paginate(15);
+        $reports = DB::table('reports')->orderByDesc('created_at')->paginate(15);
 
         return response()->json(['status' => 'success', 'data' => $reports], 200);
     }
