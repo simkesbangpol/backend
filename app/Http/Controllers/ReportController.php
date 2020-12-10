@@ -17,7 +17,20 @@ class ReportController extends Controller
     }
 
     public function store(Request $request){
-        $report = new Report($request->all());
+        $report = new Report($request->except('file'));
+        if($request->hasFile('file')){
+            $original_filename = $request->file('file')->getClientOriginalName();
+            $original_filename_arr = explode('.', $original_filename);
+            $file_ext = end($original_filename_arr);
+            $destination_path = './upload/user/';
+            $uploadedFile = 'U-' . app('auth')->user()->id . '-' . time() . '.' . $file_ext;
+
+            if ($request->file('file')->move($destination_path, $uploadedFile)) {
+                $report->file = '/upload/user/' . $uploadedFile;
+            } else {
+                return response()->json(['status' => 'failed', 'data' => [], 'message' => "Error while uploading the file"], 400);
+            }
+        }
         if($report->save()){
             return response()->json(['status' => 'success', 'data' => $report, 'message' => "Report submitted successfully"], 200);
         }

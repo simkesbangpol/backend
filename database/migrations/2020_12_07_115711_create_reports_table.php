@@ -23,6 +23,7 @@ class CreateReportsTable extends Migration
             $table->string('action');
             $table->text('recommendation');
             $table->tinyInteger('status');
+            $table->string('file');
             $table->bigInteger('category_id')->unsigned()->nullable();
             $table->foreign('category_id')->references('id')->on('report_categories');
             $table->integer('user_id')->unsigned()->nullable();
