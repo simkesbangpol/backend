@@ -13,7 +13,15 @@ class ReportCategory extends Model
         'color'
     ];
 
+    protected $appends = [
+        'unprocessed_count'
+    ];
+
+    public function getUnprocessedCountAttribute(){
+        return $this->reports()->where('status', 0)->count();
+    }
+
     public function reports() {
-        return $this->hasMany(Report::class, 'category_id', 'id');
+        return $this->hasMany(Report::class, 'category_id');
     }
 }

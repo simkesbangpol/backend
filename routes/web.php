@@ -47,6 +47,16 @@ $router->group(['middleware' => 'auth:api', 'prefix' => 'users'], function ($rou
     $router->delete('/{id:[0-9]+}', 'UserController@destroy');
 });
 
+$router->group(['middleware' => 'auth:api', 'prefix' => 'dashboard'], function ($router) {
+    $router->get('/summary', 'DashboardController@index');
+    $router->get('/reports/status/{status}', 'DashboardController@getReports');
+//    $router->post('/', 'DashboardController@store');
+//    $router->get('/{id:[0-9]+}', 'DashboardController@get');
+//    $router->put('/{id:[0-9]+}', 'DashboardController@update');
+//    $router->patch('/{id:[0-9]+}', 'DashboardController@update');
+//    $router->delete('/{id:[0-9]+}', 'DashboardController@destroy');
+});
+
 $router->group(['middleware' => 'auth:api', 'prefix' => 'reports'], function ($router) {
     $router->get('/', 'ReportController@index');
     $router->post('/', 'ReportController@store');
