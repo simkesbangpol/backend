@@ -39,5 +39,11 @@ class DatabaseSeeder extends Seeder
         ReportCategory::create(['name' => 'Ekonomi']);
         ReportCategory::create(['name' => 'Sosial']);
         ReportCategory::create(['name' => 'Budaya']);
+
+        $sql = file_get_contents(database_path() . '/seeders/kecamatan.sql');
+        DB::statement($sql);
+
+        $sql = file_get_contents(database_path() . '/seeders/desa.sql');
+        DB::statement($sql);
     }
 }
