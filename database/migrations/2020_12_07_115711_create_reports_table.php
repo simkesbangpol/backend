@@ -31,6 +31,7 @@ class CreateReportsTable extends Migration
             $table->integer('village_id')->unsigned()->nullable();
             $table->foreign('village_id')->references('id')->on('villages');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
