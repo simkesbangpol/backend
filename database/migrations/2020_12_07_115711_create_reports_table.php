@@ -22,7 +22,7 @@ class CreateReportsTable extends Migration
             $table->text('description');
             $table->string('action');
             $table->text('recommendation');
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->default(0);
             $table->string('file');
             $table->bigInteger('category_id')->unsigned()->nullable();
             $table->foreign('category_id')->references('id')->on('report_categories');
