@@ -10,12 +10,13 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
+use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
-    use Authenticatable, Authorizable, QueryFilterable, ModelValidatable, AttributeHashable, HasFactory;
+    use Authenticatable, Authorizable, QueryFilterable, ModelValidatable, AttributeHashable, HasFactory, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -23,7 +24,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'address', 'username', 'phone_number'
     ];
 
     /**
@@ -41,7 +42,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $visible = [
-        'id', 'name', 'email',
+        'id', 'name', 'email', 'address', 'username', 'phone_number'
     ];
 
     /**

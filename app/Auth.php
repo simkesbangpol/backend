@@ -21,7 +21,11 @@ class Auth
             throw new UnauthorizedException();
         }
 
-        return fractal($token, new TokenTransformer())->toArray();
+        $token = fractal($token, new TokenTransformer())->toArray();
+        $token['data']['user'] = app('auth')->user();
+        $token['data']['roles'] = app('auth')->user()->getRoleNames();
+
+        return $token;
     }
 
     /**
