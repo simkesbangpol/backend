@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateReportRequest;
 use App\Http\Requests\UpdateReportRequest;
 use App\Models\Report;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
@@ -15,9 +16,9 @@ class ReportController extends Controller
         return response()->json(['status' => 'success', 'data' => $reports], 200);
     }
 
-    public function store(CreateReportRequest $request){
+    public function store(Request $request){
         $report = new Report($request->all());
-        if($report){
+        if($report->save()){
             return response()->json(['status' => 'success', 'data' => $report, 'message' => "Report submitted successfully"], 200);
         }
     }
@@ -42,7 +43,7 @@ class ReportController extends Controller
         return response()->json(['status' => 'failed', 'data' => '', 'message' => "Error while deleting a report"], 400);
     }
 
-    public function update(UpdateReportRequest $request, $id){
+    public function update(Request $request, $id){
         $report = Report::find($id);
         if(!$report){
             return response()->json(['status' => 'failed', 'data' => '', 'message' => "Report with ID $id not found"], 404);
