@@ -49,7 +49,7 @@ $router->group(['middleware' => 'auth:api', 'prefix' => 'users'], function ($rou
 $router->group(['middleware' => 'auth:api', 'prefix' => 'reports'], function ($router) {
     $router->get('/', 'ReportController@index');
     $router->post('/', 'ReportController@store');
-    $router->get('/{id:[0-9]+}', 'ReportController@show');
+    $router->get('/{id:[0-9]+}', 'ReportController@get');
     $router->put('/{id:[0-9]+}', 'ReportController@update');
     $router->patch('/{id:[0-9]+}', 'ReportController@update');
     $router->delete('/{id:[0-9]+}', 'ReportController@destroy');
@@ -58,8 +58,27 @@ $router->group(['middleware' => 'auth:api', 'prefix' => 'reports'], function ($r
 $router->group(['middleware' => 'auth:api', 'prefix' => 'report_categories'], function ($router) {
     $router->get('/', 'ReportCategoryController@index');
     $router->post('/', 'ReportCategoryController@store');
-    $router->get('/{id:[0-9]+}', 'ReportCategoryController@show');
+    $router->get('/{id:[0-9]+}', 'ReportCategoryController@get');
     $router->put('/{id:[0-9]+}', 'ReportCategoryController@update');
     $router->patch('/{id:[0-9]+}', 'ReportCategoryController@update');
     $router->delete('/{id:[0-9]+}', 'ReportCategoryController@destroy');
+});
+
+$router->group(['middleware' => 'auth:api', 'prefix' => 'districts'], function ($router) {
+    $router->get('/', 'DistrictController@index');
+    $router->post('/', 'DistrictController@store');
+    $router->get('/{id:[0-9]+}', 'DistrictController@get');
+    $router->get('/{id:[0-9]+}/villages', 'DistrictController@getVillages');
+    $router->put('/{id:[0-9]+}', 'DistrictController@update');
+    $router->patch('/{id:[0-9]+}', 'DistrictController@update');
+    $router->delete('/{id:[0-9]+}', 'DistrictController@destroy');
+});
+
+$router->group(['middleware' => 'auth:api', 'prefix' => 'villages'], function ($router) {
+    $router->get('/', 'VillageController@index');
+    $router->post('/', 'VillageController@store');
+    $router->get('/{id:[0-9]+}', 'VillageController@get');
+    $router->put('/{id:[0-9]+}', 'VillageController@update');
+    $router->patch('/{id:[0-9]+}', 'VillageController@update');
+    $router->delete('/{id:[0-9]+}', 'VillageController@destroy');
 });
