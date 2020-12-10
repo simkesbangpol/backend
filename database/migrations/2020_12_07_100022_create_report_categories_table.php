@@ -15,8 +15,9 @@ class CreateReportCategoriesTable extends Migration
     {
         Schema::create('report_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('icon');
+            $table->string('icon')->nullable();
             $table->string('name');
+            $table->string('color')->nullable()->default('#000000');
             $table->timestamps();
         });
     }

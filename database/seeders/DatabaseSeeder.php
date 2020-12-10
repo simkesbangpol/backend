@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ReportCategory;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -32,5 +33,11 @@ class DatabaseSeeder extends Seeder
         Role::create(['name' => 'user']);
 
         User::find(1)->assignRole('admin');
+
+        ReportCategory::create(['name' => 'Ideologi']);
+        ReportCategory::create(['name' => 'Politik']);
+        ReportCategory::create(['name' => 'Ekonomi']);
+        ReportCategory::create(['name' => 'Sosial']);
+        ReportCategory::create(['name' => 'Budaya']);
     }
 }

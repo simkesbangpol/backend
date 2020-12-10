@@ -9,6 +9,7 @@ class ReportCategory extends Model
     protected $table = 'report_categories';
     protected $fillable = [
         'icon',
-        'name'
+        'name',
+        'color'
     ];
 }
