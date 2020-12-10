@@ -22,6 +22,8 @@ class CreateUsersTable extends Migration
             $table->string('phone_number');
             $table->string('password');
             $table->dateTime('email_verified_at')->nullable();
+            $table->integer('village_id')->unsigned()->nullable();
+            $table->foreign('village_id')->references('id')->on('villages');
             $table->timestamps();
         });
     }

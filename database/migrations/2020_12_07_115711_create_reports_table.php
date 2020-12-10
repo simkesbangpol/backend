@@ -23,11 +23,13 @@ class CreateReportsTable extends Migration
             $table->string('action');
             $table->text('recommendation');
             $table->tinyInteger('status')->default(0);
-            $table->string('file');
+            $table->string('file')->nullable();
             $table->bigInteger('category_id')->unsigned()->nullable();
             $table->foreign('category_id')->references('id')->on('report_categories');
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('village_id')->unsigned()->nullable();
+            $table->foreign('village_id')->references('id')->on('villages');
             $table->timestamps();
         });
     }
