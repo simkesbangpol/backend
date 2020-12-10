@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Anik\Form\FormRequest;
+use Illuminate\Http\Request;
 
-class CreateReportCategoryRequest extends FormRequest
+class CreateReportCategoryRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
