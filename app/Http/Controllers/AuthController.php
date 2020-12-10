@@ -71,4 +71,10 @@ class AuthController extends Controller
 
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
+
+    public function showReports(){
+        $user = app('auth')->user();
+
+        return response()->json(['success' => true, 'data' => $user->reports()->paginate(15), 'message' => "Data loaded successfully"]);
+    }
 }

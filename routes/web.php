@@ -33,6 +33,7 @@ $router->get('/', function () use ($router) {
 $router->post('/auth', 'AuthController@store');
 $router->group(['middleware' => 'auth:api', 'prefix' => 'auth'], function ($router) {
     $router->get('/', 'AuthController@show');
+    $router->get('/reports', 'AuthController@showReports');
     $router->put('/', 'AuthController@update');
     $router->delete('/', 'AuthController@destroy');
 });
