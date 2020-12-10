@@ -34,6 +34,7 @@ class ReportController extends Controller
         if($report->save()){
             return response()->json(['status' => 'success', 'data' => $report, 'message' => "Report submitted successfully"], 200);
         }
+        return response()->json(['status' => 'failed', 'data' => '', 'message' => "Error while submitting a report"], 400);
     }
 
     public function get($id){
