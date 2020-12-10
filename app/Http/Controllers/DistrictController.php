@@ -10,7 +10,7 @@ class DistrictController extends Controller
 {
 
     public function index(){
-        $districts = DB::table('districts')->paginate(15);
+        $districts = DB::table('districts')->paginate(30);
 
         return response()->json(['status' => 'success', 'data' => $districts], 200);
     }
