@@ -12,4 +12,8 @@ class ReportCategory extends Model
         'name',
         'color'
     ];
+
+    public function reports() {
+        return $this->hasMany(Report::class, 'category_id', 'id');
+    }
 }

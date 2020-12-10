@@ -18,4 +18,12 @@ class Report extends Model
         'status',
         'category_id'
     ];
+
+    public function category(){
+        return $this->belongsTo(ReportCategory::class, 'category_id', 'id');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }
