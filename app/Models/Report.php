@@ -16,7 +16,8 @@ class Report extends Model
         'action',
         'recommendation',
         'status',
-        'category_id'
+        'category_id',
+        'user_id',
     ];
 
     public function category(){
