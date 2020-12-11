@@ -93,3 +93,12 @@ $router->group(['middleware' => 'auth:api', 'prefix' => 'villages'], function ($
     $router->patch('/{id:[0-9]+}', 'VillageController@update');
     $router->delete('/{id:[0-9]+}', 'VillageController@destroy');
 });
+
+$router->group(['middleware' => 'auth:api', 'prefix' => 'roles'], function ($router) {
+    $router->get('/', 'RoleController@index');
+//    $router->post('/', 'RoleController@store');
+//    $router->get('/{id:[0-9]+}', 'RoleController@get');
+//    $router->put('/{id:[0-9]+}', 'RoleController@update');
+//    $router->patch('/{id:[0-9]+}', 'RoleController@update');
+//    $router->delete('/{id:[0-9]+}', 'RoleController@destroy');
+});
