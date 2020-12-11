@@ -24,7 +24,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'address', 'username', 'phone_number'
+        'name', 'email', 'password', 'address', 'username', 'phone_number', 'village_id'
     ];
 
     /**
@@ -42,7 +42,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $visible = [
-        'id', 'name', 'email', 'address', 'username', 'phone_number'
+        'id', 'name', 'email', 'address', 'username', 'phone_number', 'village_id'
     ];
 
     /**
@@ -61,6 +61,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     protected $hashable = [
         'password',
+    ];
+
+    protected $appends = [
+        'roles',
+        'village',
+        'district'
     ];
 
     /**
@@ -105,7 +111,23 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return [];
     }
 
+    public function getRolesAttribute(){
+        return $this->roles()->get();
+    }
+
+    public function getDistrictAttribute(){
+        return $this->village()->first()->district()->first();
+    }
+
+    public function getVillageAttribute(){
+        return $this->village()->first();
+    }
+
     public function reports(){
         return $this->hasMany(Report::class, 'user_id', 'id');
+    }
+
+    public function village(){
+        return $this->belongsTo(Village::class, 'village_id', 'id');
     }
 }
