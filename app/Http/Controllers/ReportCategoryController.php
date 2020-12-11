@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateReportCategoryRequest;
 use App\Http\Requests\UpdateReportCategoryRequest;
+use App\Models\Report;
 use App\Models\ReportCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,8 +12,8 @@ use Illuminate\Support\Facades\DB;
 class ReportCategoryController extends Controller
 {
 
-    public function index(){
-        $reports = DB::table('report_categories')->paginate(15);
+    public function index(Request $request){
+        $reports = ReportCategory::filter($request->all())->orderByDesc('created_at')->paginate(15);
 
         return response()->json(['status' => 'success', 'data' => $reports], 200);
     }

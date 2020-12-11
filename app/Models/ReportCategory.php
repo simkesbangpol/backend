@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Model;
 
 class ReportCategory extends Model
 {
+    use Filterable;
+
     protected $table = 'report_categories';
     protected $fillable = [
         'icon',
