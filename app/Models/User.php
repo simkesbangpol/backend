@@ -24,7 +24,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'address', 'username', 'phone_number'
+        'name', 'email', 'password', 'address', 'username', 'phone_number', 'village_id'
     ];
 
     /**
@@ -42,7 +42,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $visible = [
-        'id', 'name', 'email', 'address', 'username', 'phone_number'
+        'id', 'name', 'email', 'address', 'username', 'phone_number', 'village_id'
     ];
 
     /**
@@ -61,6 +61,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     protected $hashable = [
         'password',
+    ];
+
+    protected $appends = [
+        'roles'
     ];
 
     /**
@@ -103,6 +107,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function getJWTCustomClaims(): array
     {
         return [];
+    }
+
+    public function getRolesAttribute(){
+        return $this->roles()->get();
     }
 
     public function reports(){
