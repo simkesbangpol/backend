@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\DB;
 class ReportController extends Controller
 {
     public function index(Request $request){
-        $reports = Report::filter($request->all())->with('category')->orderByDesc('created_at')->paginate(15);
+        $perPage = $request->has('perPage') ? $request->get('perPage') : 15;
+        $reports = Report::filter($request->all())->with('category')->orderByDesc('id')->paginate($perPage);
 
         return response()->json(['status' => 'success', 'data' => $reports], 200);
     }

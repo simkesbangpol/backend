@@ -33,4 +33,8 @@ class ReportFilter extends ModelFilter
     public function village($village){
         return $this->where('village_id', $village);
     }
+
+    public function search($search){
+        return $this->where('title', 'LIKE', '%'.$search.'%');
+    }
 }
