@@ -56,6 +56,7 @@ class Accounts
         }
 
         $user->save();
+        $user->syncRoles($attrs['roles']);
 
         event(new UserCreated($user));
 
@@ -80,6 +81,7 @@ class Accounts
         if (!$user->isValidFor('UPDATE')) {
             throw new ValidationException($user->validator());
         }
+        $user->syncRoles($attrs['roles']);
 
         $changes = $user->getDirty();
         $user->save();
