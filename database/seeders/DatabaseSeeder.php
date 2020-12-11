@@ -18,13 +18,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-//         $this->call('UsersTableSeeder');
+        $sql = file_get_contents(database_path() . '/seeders/kecamatan.sql');
+        DB::statement($sql);
+
+        $sql = file_get_contents(database_path() . '/seeders/desa.sql');
+        DB::statement($sql);
+
         DB::table('users')->insert([
             'username' => "User",
             'address' => "Address",
             'phone_number' => "Phone",
             'name' => "User",
             'email' => "testdev@email.com",
+            'village_id' => 1,
             'password' => Hash::make('password')
         ]);
 
@@ -39,11 +45,5 @@ class DatabaseSeeder extends Seeder
         ReportCategory::create(['name' => 'Ekonomi']);
         ReportCategory::create(['name' => 'Sosial']);
         ReportCategory::create(['name' => 'Budaya']);
-
-        $sql = file_get_contents(database_path() . '/seeders/kecamatan.sql');
-        DB::statement($sql);
-
-        $sql = file_get_contents(database_path() . '/seeders/desa.sql');
-        DB::statement($sql);
     }
 }
