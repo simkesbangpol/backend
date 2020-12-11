@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Report extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Filterable;
+
     protected $table = "reports";
     protected $fillable = [
         'title',

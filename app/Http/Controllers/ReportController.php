@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
-    public function index(){
-        $reports = Report::with('category')->orderByDesc('created_at')->paginate(15);
+    public function index(Request $request){
+        $reports = Report::filter($request->all())->with('category')->orderByDesc('created_at')->paginate(15);
 
         return response()->json(['status' => 'success', 'data' => $reports], 200);
     }
