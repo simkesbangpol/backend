@@ -120,6 +120,7 @@ if ('local' === $app->environment()) {
 $app->configure('permission');
 $app->alias('cache', \Illuminate\Cache\CacheManager::class);  // if you don't have this already
 $app->register(Spatie\Permission\PermissionServiceProvider::class);
+$app->register(EloquentFilter\LumenServiceProvider::class);
 
 $app->middleware([
     App\Http\Middleware\CorsMiddleware::class // Add this
@@ -147,5 +148,7 @@ $app->router->group([
 ], function ($router) {
     require __DIR__ . '/../routes/web.php';
 });
+
+config(['eloquentfilter.namespace' => "App\\Models\\ModelFilters\\"]);
 
 return $app;
