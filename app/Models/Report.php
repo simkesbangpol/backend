@@ -24,7 +24,8 @@ class Report extends Model
         'category_id',
         'user_id',
     ];
-    protected $with = ['category'];
+    protected $with = ['category', 'village', 'user'];
+    protected $appends = ['parsed_status', 'parsed_date'];
 
     private $statuses = [
         0 => 'Belum diproses',
@@ -37,8 +38,12 @@ class Report extends Model
         return Carbon::parse($value)->format('d F Y');
     }
 
-    public function getStatusAttribute($value){
-        return $this->statuses[$value];
+    public function getParsedStatusAttribute(){
+        return $this->statuses[$this->status];
+    }
+
+    public function getParsedDateAttribute(){
+        return Carbon::parse($this->created_at)->format('H:i, d F Y');
     }
 
     public function category(){
@@ -47,5 +52,9 @@ class Report extends Model
 
     public function user(){
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function village(){
+        return $this->belongsTo(Village::class, 'village_id', 'id');
     }
 }
