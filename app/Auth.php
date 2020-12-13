@@ -11,13 +11,13 @@ class Auth
     /**
      * Authenticate a user by emailand password
      *
-     * @param  string  $email
+     * @param  string  $username
      * @param  string  $password
      * @return array
      */
-    public function authenticateByEmailAndPassword(string $email, string $password): array
+    public function authenticateByEmailAndPassword(string $username, string $password): array
     {
-        if (!$token = app('auth')->attempt(compact('email', 'password'))) {
+        if (!$token = app('auth')->attempt(compact('username', 'password'))) {
             throw new UnauthorizedException();
         }
 
