@@ -25,7 +25,7 @@ class Report extends Model
         'user_id',
     ];
     protected $with = ['category', 'village', 'user'];
-    protected $appends = ['parsed_status', 'parsed_date'];
+    protected $appends = ['parsed_status', 'parsed_date', 'parsed_created_at'];
 
     private $statuses = [
         0 => 'Belum diproses',
@@ -43,6 +43,10 @@ class Report extends Model
     }
 
     public function getParsedDateAttribute(){
+        return Carbon::parse($this->date)->format('H:i, d F Y');
+    }
+
+    public function getParsedCreatedAtAttribute(){
         return Carbon::parse($this->created_at)->format('H:i, d F Y');
     }
 
