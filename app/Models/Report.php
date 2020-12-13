@@ -39,7 +39,7 @@ class Report extends Model
     }
 
     public function getParsedDateAttribute(){
-        return Carbon::parse($this->date)->format('H:i, d F Y');
+        return Carbon::parse($this->date)->format('d F Y');
     }
 
     public function getParsedCreatedAtAttribute(){
