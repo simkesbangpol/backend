@@ -22,6 +22,7 @@ class Report extends Model
         'recommendation',
         'status',
         'category_id',
+        'village_id',
         'user_id',
     ];
     protected $with = ['category', 'village', 'user'];

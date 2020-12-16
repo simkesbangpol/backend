@@ -19,19 +19,6 @@ class ReportController extends Controller
 
     public function store(Request $request){
         $report = new Report($request->except('file'));
-        if($request->hasFile('file')){
-            $original_filename = $request->file('file')->getClientOriginalName();
-            $original_filename_arr = explode('.', $original_filename);
-            $file_ext = end($original_filename_arr);
-            $destination_path = './upload/user/';
-            $uploadedFile = 'U-' . app('auth')->user()->id . '-' . time() . '.' . $file_ext;
-
-            if ($request->file('file')->move($destination_path, $uploadedFile)) {
-                $report->file = '/upload/user/' . $uploadedFile;
-            } else {
-                return response()->json(['status' => 'failed', 'data' => [], 'message' => "Error while uploading the file"], 400);
-            }
-        }
         if($report->save()){
             return response()->json(['status' => 'success', 'data' => $report, 'message' => "Report submitted successfully"], 200);
         }
@@ -68,5 +55,28 @@ class ReportController extends Controller
             return response()->json(['status' => 'success', 'data' => $report, 'message' => "Report updated successfully"], 200);
         }
         return response()->json(['status' => 'failed', 'data' => '', 'message' => "Error while updating a report"], 400);
+    }
+
+    public function fileUpload(Request $request, $id){
+        $report = Report::find($id);
+        if ($report) {
+            if ($request->hasFile('file')) {
+                $original_filename = $request->file('file')->getClientOriginalName();
+                $original_filename_arr = explode('.', $original_filename);
+                $file_ext = end($original_filename_arr);
+                $destination_path = './upload/user/';
+                $uploadedFile = 'U-' . app('auth')->user()->id . '-' . time() . '.' . $file_ext;
+
+                if ($request->file('file')->move($destination_path, $uploadedFile)) {
+                    $report->file = '/upload/user/' . $uploadedFile;
+                    $report->save();
+                    return response()->json(['status' => 'success', 'data' => $report, 'message' => "File successfully uploaded"]);
+                } else {
+                    return response()->json(['status' => 'failed', 'data' => [], 'message' => "Error while uploading the file"], 400);
+                }
+            }
+            return response()->json(['status' => 'failed', 'data' => '', 'message' => "No file attached"], 400);
+        }
+        return response()->json(['status' => 'failed', 'data' => '', 'message' => "Report with ID $id not found"], 404);
     }
 }
