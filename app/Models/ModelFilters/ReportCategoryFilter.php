@@ -15,10 +15,14 @@ class ReportCategoryFilter extends ModelFilter
     public $relations = [];
 
     public function dateStart($date){
-        return $this->whereDate('date', '>=', $date);
+        return $this->whereHas('reports', function ($query) use ($date) {
+            $query->whereDate('date', '>=', $date);
+        });
     }
 
     public function dateEnd($date){
-        return $this->whereDate('date', '<=', $date);
+        return $this->whereHas('reports', function ($query) use ($date) {
+            $query->whereDate('date', '<=', $date);
+        });
     }
 }
