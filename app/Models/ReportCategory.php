@@ -17,11 +17,11 @@ class ReportCategory extends Model
     ];
 
     protected $appends = [
-        'unprocessed_count'
+        'report_count'
     ];
 
-    public function getUnprocessedCountAttribute(){
-        return $this->reports()->where('status', 0)->count();
+    public function getReportCountAttribute(){
+        return $this->reports()->count();
     }
 
     public function reports() {
