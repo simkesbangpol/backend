@@ -7,6 +7,8 @@ use App\Http\Requests\UpdateReportRequest;
 use App\Models\Report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Exception;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -130,5 +132,52 @@ class ReportController extends Controller
             return response()->json(['success' => 'failed', 'message' => "Error exporting data"], 400);
         }
         return response()->json(['success' => 'failed', 'message' => "Error exporting data"], 400);
+    }
+
+    public function import(Request $request){
+        $user = app('auth')->user();
+
+        if ($request->hasFile('file')) {
+            $original_filename = $request->file('file')->getClientOriginalName();
+            $original_filename_arr = explode('.', $original_filename);
+            $file_ext = end($original_filename_arr);
+            $destination_path = './upload/import/';
+            $uploadedFile = 'U-' . $user->id . '-' . time() . '-import.' . $file_ext;
+
+            if ($request->file('file')->move($destination_path, $uploadedFile)) {
+                $inputFileType = ucfirst($file_ext);
+                $inputFileName = $destination_path.DIRECTORY_SEPARATOR.$uploadedFile;
+
+                $reader = IOFactory::createReader($inputFileType);
+                $reader->setLoadSheetsOnly(["Format Import Laporan"]);
+                $spreadsheet = $reader->load($inputFileName);
+
+                $sheet = $spreadsheet->getSheetByName("Format Import Laporan");
+
+
+                $highestRow = $sheet->getHighestRow(); // e.g. 10
+                $highestColumn = $sheet->getHighestColumn(); // e.g 'F'
+                $highestColumnIndex = Coordinate::columnIndexFromString($highestColumn); // e.g. 5
+
+                for ($row = 2; $row <= $highestRow; ++$row) {
+                    Report::create([
+                        'title' => $sheet->getCellByColumnAndRow(1, $row)->getValue(),
+                        'fact' => $sheet->getCellByColumnAndRow(3, $row)->getValue(),
+                        'date' => $sheet->getCellByColumnAndRow(4, $row)->getValue(),
+                        'location' => $sheet->getCellByColumnAndRow(5, $row)->getValue(),
+                        'description' => $sheet->getCellByColumnAndRow(8, $row)->getValue(),
+                        'action' => $sheet->getCellByColumnAndRow(9, $row)->getValue(),
+                        'recommendation' => $sheet->getCellByColumnAndRow(10, $row)->getValue(),
+                        'village_id' => $sheet->getCellByColumnAndRow(12, $row)->getValue(),
+                        'category_id' => $sheet->getCellByColumnAndRow(13, $row)->getValue(),
+                        'user_id' => $user->id
+                    ]);
+                }
+
+                return response()->json(['status' => 'success', 'message' => "File successfully uploaded"]);
+            } else {
+                return response()->json(['status' => 'failed', 'message' => "Error while uploading the file"], 400);
+            }
+        }
     }
 }
