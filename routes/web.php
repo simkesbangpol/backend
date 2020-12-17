@@ -59,7 +59,7 @@ $router->group(['middleware' => 'auth:api', 'prefix' => 'dashboard'], function (
 
 $router->group(['middleware' => 'auth:api', 'prefix' => 'reports'], function ($router) {
     $router->get('/', 'ReportController@index');
-    $router->get('reports/export', 'ReportController@export');
+    $router->get('/export', 'ReportController@export');
     $router->post('/import', 'ReportController@import');
     $router->post('/', 'ReportController@store');
     $router->post('/{id:[0-9]+}/file', 'ReportController@fileUpload');
