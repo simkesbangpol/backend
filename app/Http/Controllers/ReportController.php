@@ -123,15 +123,18 @@ class ReportController extends Controller
                 $activeSheet->setCellValue('L'.($index+2), $report->user()->first()->name);
             }
         }
+        $file_ext = "xlsx";
+        $fileName = 'EXPORT-' . time() . '.' . $file_ext;
 
         try {
-            header('Content-Type: application/vnd.ms-excel');
-            header('Content-Disposition: attachment; filename="reports.xlsx"');
-            $excel_writer->save("php://output");
+            $excel_writer->save($fileName);
+            return response()->download($fileName, 'reports.xlsx', [
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            ])->deleteFileAfterSend(true);
         } catch (Exception $e) {
             return response()->json(['success' => 'failed', 'message' => "Error exporting data"], 400);
         }
-        return response()->json(['success' => 'failed', 'message' => "Error exporting data"], 400);
+
     }
 
     public function import(Request $request){
