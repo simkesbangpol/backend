@@ -21,6 +21,13 @@ class ReportCategory extends Model
     ];
 
     public function getReportCountAttribute(){
+        if(request()->has('date_start') && request()->has('date_end')){
+            return $this
+                ->reports()
+                ->whereDate('date', '>=', request()->get('date_start'))
+                ->whereDate('date', '<=', request()->get('date_end'))
+                ->count();
+        }
         return $this->reports()->count();
     }
 

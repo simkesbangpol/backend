@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request){
-        $summary = ReportCategory::filter($request->all())->get();
+    public function index(){
+        $summary = ReportCategory::all();
 
         return response()->json(['success' => true, 'data' => $summary, 'message' => "Summary"]);
     }
