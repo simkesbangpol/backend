@@ -6,3 +6,4 @@ Homestead.yaml
 .env
 /public/upload/
 /public/reports.xlsx
+composer.lock
