@@ -70,6 +70,9 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         if ($this->checkIfJsonRenderable($exception)) {
+            if ($exception instanceof \Spatie\Permission\Exceptions\UnauthorizedException) {
+                $exception = new \Spatie\Permission\Exceptions\UnauthorizedException(403, "You are not authorized to access this endpoint.", null);
+            }
             return $this->renderJson($request, $exception);
         }
 

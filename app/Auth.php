@@ -18,7 +18,7 @@ class Auth
     public function authenticateByEmailAndPassword(string $username, string $password): array
     {
         if (!$token = app('auth')->attempt(compact('username', 'password'))) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException("Wrong Login credentials");
         }
 
         $token = fractal($token, new TokenTransformer())->toArray();
