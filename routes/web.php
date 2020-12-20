@@ -38,7 +38,7 @@ $router->group(['middleware' => 'auth:api', 'prefix' => 'auth'], function ($rout
     $router->delete('/', 'AuthController@destroy');
 });
 
-$router->group(['middleware' => 'auth:api', 'prefix' => 'users'], function ($router) {
+$router->group(['middleware' => ['auth:api', 'role:admin'], 'prefix' => 'users'], function ($router) {
     $router->get('/', 'UserController@index');
     $router->post('/', 'UserController@store');
     $router->get('/{id:[0-9]+}', 'UserController@show');
@@ -58,46 +58,54 @@ $router->group(['middleware' => 'auth:api', 'prefix' => 'dashboard'], function (
 });
 
 $router->group(['middleware' => 'auth:api', 'prefix' => 'reports'], function ($router) {
-    $router->get('/', 'ReportController@index');
-    $router->get('/export', 'ReportController@export');
-    $router->post('/import', 'ReportController@import');
     $router->post('/', 'ReportController@store');
-    $router->post('/{id:[0-9]+}/file', 'ReportController@fileUpload');
-    $router->get('/{id:[0-9]+}', 'ReportController@get');
-    $router->put('/{id:[0-9]+}', 'ReportController@update');
-    $router->patch('/{id:[0-9]+}', 'ReportController@update');
-    $router->delete('/{id:[0-9]+}', 'ReportController@destroy');
+    $router->group(['middleware' => ['role:admin|pegawai']], function($router){
+        $router->get('/', 'ReportController@index');
+        $router->get('/export', 'ReportController@export');
+        $router->post('/import', 'ReportController@import');
+        $router->post('/{id:[0-9]+}/file', 'ReportController@fileUpload');
+        $router->get('/{id:[0-9]+}', 'ReportController@get');
+        $router->put('/{id:[0-9]+}', 'ReportController@update');
+        $router->patch('/{id:[0-9]+}', 'ReportController@update');
+        $router->delete('/{id:[0-9]+}', 'ReportController@destroy');
+    });
 });
 
 $router->group(['middleware' => 'auth:api', 'prefix' => 'report_categories'], function ($router) {
     $router->get('/', 'ReportCategoryController@index');
-    $router->post('/', 'ReportCategoryController@store');
-    $router->get('/{id:[0-9]+}', 'ReportCategoryController@get');
-    $router->put('/{id:[0-9]+}', 'ReportCategoryController@update');
-    $router->patch('/{id:[0-9]+}', 'ReportCategoryController@update');
-    $router->delete('/{id:[0-9]+}', 'ReportCategoryController@destroy');
+    $router->group(['middleware' => ['role:admin|pegawai']], function($router) {
+        $router->post('/', 'ReportCategoryController@store');
+        $router->get('/{id:[0-9]+}', 'ReportCategoryController@get');
+        $router->put('/{id:[0-9]+}', 'ReportCategoryController@update');
+        $router->patch('/{id:[0-9]+}', 'ReportCategoryController@update');
+        $router->delete('/{id:[0-9]+}', 'ReportCategoryController@destroy');
+    });
 });
 
 $router->group(['middleware' => 'auth:api', 'prefix' => 'districts'], function ($router) {
     $router->get('/', 'DistrictController@index');
-    $router->post('/', 'DistrictController@store');
     $router->get('/{id:[0-9]+}', 'DistrictController@get');
     $router->get('/{id:[0-9]+}/villages', 'DistrictController@getVillages');
-    $router->put('/{id:[0-9]+}', 'DistrictController@update');
-    $router->patch('/{id:[0-9]+}', 'DistrictController@update');
-    $router->delete('/{id:[0-9]+}', 'DistrictController@destroy');
+    $router->group(['middleware' => ['role:admin|pegawai']], function($router) {
+        $router->post('/', 'DistrictController@store');
+        $router->patch('/{id:[0-9]+}', 'DistrictController@update');
+        $router->put('/{id:[0-9]+}', 'DistrictController@update');
+        $router->delete('/{id:[0-9]+}', 'DistrictController@destroy');
+    });
 });
 
 $router->group(['middleware' => 'auth:api', 'prefix' => 'villages'], function ($router) {
     $router->get('/', 'VillageController@index');
-    $router->post('/', 'VillageController@store');
     $router->get('/{id:[0-9]+}', 'VillageController@get');
-    $router->put('/{id:[0-9]+}', 'VillageController@update');
-    $router->patch('/{id:[0-9]+}', 'VillageController@update');
-    $router->delete('/{id:[0-9]+}', 'VillageController@destroy');
+    $router->group(['middleware' => ['role:admin|pegawai']], function($router) {
+        $router->post('/', 'VillageController@store');
+        $router->put('/{id:[0-9]+}', 'VillageController@update');
+        $router->patch('/{id:[0-9]+}', 'VillageController@update');
+        $router->delete('/{id:[0-9]+}', 'VillageController@destroy');
+    });
 });
 
-$router->group(['middleware' => 'auth:api', 'prefix' => 'roles'], function ($router) {
+$router->group(['middleware' => ['auth:api', 'role:admin|pegawai'], 'prefix' => 'roles'], function ($router) {
     $router->get('/', 'RoleController@index');
 //    $router->post('/', 'RoleController@store');
 //    $router->get('/{id:[0-9]+}', 'RoleController@get');
