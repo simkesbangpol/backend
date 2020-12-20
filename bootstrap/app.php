@@ -130,6 +130,7 @@ $app->routeMiddleware([
     'auth'       => App\Http\Middleware\Authenticate::class,
     'permission' => Spatie\Permission\Middlewares\PermissionMiddleware::class,
     'role'       => Spatie\Permission\Middlewares\RoleMiddleware::class,
+    'report-check'  => App\Http\Middleware\IsEditingSelfReport::class
 ]);
 
 /*

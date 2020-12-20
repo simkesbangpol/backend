@@ -59,14 +59,16 @@ $router->group(['middleware' => ['auth:api','role:admin|pegawai'], 'prefix' => '
 
 $router->group(['middleware' => 'auth:api', 'prefix' => 'reports'], function ($router) {
     $router->post('/', 'ReportController@store');
-    $router->get('/{id:[0-9]+}', 'ReportController@get');
+    $router->group(['middleware' => 'report-check'], function ($router){
+        $router->get('/{id:[0-9]+}', 'ReportController@get');
+        $router->post('/{id:[0-9]+}/file', 'ReportController@fileUpload');
+        $router->put('/{id:[0-9]+}', 'ReportController@update');
+        $router->patch('/{id:[0-9]+}', 'ReportController@update');
+    });
     $router->group(['middleware' => ['role:admin|pegawai']], function($router){
         $router->get('/', 'ReportController@index');
         $router->get('/export', 'ReportController@export');
         $router->post('/import', 'ReportController@import');
-        $router->post('/{id:[0-9]+}/file', 'ReportController@fileUpload');
-        $router->put('/{id:[0-9]+}', 'ReportController@update');
-        $router->patch('/{id:[0-9]+}', 'ReportController@update');
         $router->delete('/{id:[0-9]+}', 'ReportController@destroy');
     });
 });
