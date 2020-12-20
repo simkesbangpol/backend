@@ -12,6 +12,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Exception;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Spatie\Permission\Exceptions\UnauthorizedException;
 
 class ReportController extends Controller
 {
@@ -35,6 +36,8 @@ class ReportController extends Controller
         if(!$report){
             return response()->json(['status' => 'failed', 'data' => '', 'message' => "Report with ID $id not found"], 404);
         }
+        if(app('auth')->user()->id !== $report->user_id)
+            throw new UnauthorizedException(403);
 
         return response()->json(['status' => 'success', 'data' => $report, 'message' => "Report loaded successfully"], 200);
     }
